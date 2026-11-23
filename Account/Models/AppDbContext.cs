@@ -22,11 +22,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
             .WithMany(g => g.Users)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.Entity<User>()
-            .HasOne(u => u.Track)
-            .WithMany(t => t.Users)
-            .OnDelete(DeleteBehavior.SetNull);
-
         builder.Entity<UserOpt>()
             .HasOne(uo => uo.User)
             .WithMany(u => u.UserOpts)
@@ -36,6 +31,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
             .HasOne(uo => uo.OptGroup)
             .WithMany(og => og.UserOpts)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<MainGroup>()
+            .HasOne(mg => mg.Track)
+            .WithMany(t => t.MainGroups)
+            .OnDelete(DeleteBehavior.SetNull);
 
     }
 }

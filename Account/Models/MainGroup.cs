@@ -7,7 +7,10 @@ public class MainGroup
     [MaxLength(32)]
     public required string Id { get; set; }
     public required string Name { get; set; }
+    [MaxLength(32)]
+    public string? TrackId { get; set; }
     
     public ICollection<User> Users { get; set; } = new List<User>();
+    public Track? Track { get; set; }
 
 }

@@ -7,6 +7,5 @@ public class Track
     [MaxLength(32)]
     public required string Id { get; set; }
     public required string Name { get; set; }
-    
-    public ICollection<User> Users { get; set; } = new List<User>();
+    public ICollection<MainGroup> MainGroups { get; set; } = new List<MainGroup>();
 }

@@ -7,11 +7,8 @@ public class User: IdentityUser
 {
     [MaxLength(32)]
     public string? MainGroupId { get; set; }
-    [MaxLength(32)]
-    public string? TrackId { get; set; }
     
     public MainGroup? MainGroup { get; set; }
-    public Track? Track { get; set; }
     public ICollection<UserOpt> UserOpts { get; set; } = new List<UserOpt>();
     
 }

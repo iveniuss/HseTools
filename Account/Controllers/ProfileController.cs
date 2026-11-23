@@ -10,7 +10,7 @@ namespace Account.Controllers;
 [Route("[controller]")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [Authorize]
-public class ProfileController(AppDbContext dbContext) : ControllerBase
+public class ProfileController(AppDbContext dbContext, ILogger<ProfileController> logger) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,6 +32,13 @@ public class ProfileController(AppDbContext dbContext) : ControllerBase
 
         if (user == null)
             return Unauthorized();
+        
+        if(user.MainGroupId == groupId)
+            return BadRequest(ProblemDetailsFactory.CreateProblemDetails(
+                HttpContext,
+                StatusCodes.Status400BadRequest,
+                title: "Group already selected",
+                detail: "The selected group is already the user's main group."));
 
         if (await dbContext.MainGroups.FindAsync(groupId) == null)
             return BadRequest();
@@ -43,8 +50,9 @@ public class ProfileController(AppDbContext dbContext) : ControllerBase
             var res = await dbContext.SaveChangesAsync();
             return res > 0 ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
         }
-        catch
+        catch(Exception e)
         {
+            logger.LogError(e, "Error while selecting group");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }

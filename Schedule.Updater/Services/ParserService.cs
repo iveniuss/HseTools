@@ -211,10 +211,7 @@ public class ParserService(IServiceScopeFactory scopeFactory, IConfiguration con
         if (LinkRegex.IsMatch(line))
             return LineType.Link;
         
-        if (TeacherRegex.IsMatch(line) && LocationRegex.IsMatch(line))
-            return LineType.Description;
-        
-        if (LocationRegex.IsMatch(line))
+        if (TeacherRegex.IsMatch(line) || LocationRegex.IsMatch(line))
             return LineType.Description;
         
         return LineType.Name;
